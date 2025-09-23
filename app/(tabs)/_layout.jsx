@@ -1,4 +1,6 @@
 import { Tabs } from "expo-router"
+import {View ,Text ,  Image } from "react-native"
+
 
 export default function tabLayout(){
 
@@ -8,15 +10,38 @@ export default function tabLayout(){
   headerStyle: {
       backgroundColor: '#dcedf9ff',
     },
-      tabBarActiveTintColor: '#ffd33d',  // TAB BAR KE TEXT KA COLOR
+      tabBarActiveTintColor: 'black',  // TAB BAR KE TEXT KA COLOR
       headerTintColor: '#1b0101ff', // HEADER KE TEXT KA COLOR
-      tabBarStyle: {
-      backgroundColor: '#1b1f22ff',
-      },
+      
+       tabBarStyle: {
+          borderTopWidth: 1,
+          borderRadius:50,
+          backgroundColor:"#dcedf9ff",
+        },
+
+
+      tabBarShowIcon: false,
+        tabBarLabelStyle: {
+          fontSize: 14,
+          fontWeight: "bold",
+        },
+
+  
+
+
     }}
     >
-      <Tabs.Screen name="index"  options={{title:"Home"}}/>
-      <Tabs.Screen name="Attendence" options={{title:"Attendence"}}/>
+      <Tabs.Screen name="index"  options={{title:"Home"}} />
+
+
+      <Tabs.Screen name="Attendence" options={{title:"Attendence" ,
+         tabBarIcon: ({ focused, color, size }) => (
+                        <Image
+                          source={focused ? require('../../assets/MainImg/attendance.png') : require('../../assets/MainImg/attendance.png')}
+                          style={{ width: size, height: size, tintColor: "" }} // Adjust styling as needed
+                        />
+                      )
+      }} />
       <Tabs.Screen name="Tests"  options={{title:"Test"}}/>
       <Tabs.Screen name="Notes"  options={{title:"Notes"}}/>
     </Tabs>
