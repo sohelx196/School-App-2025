@@ -43,7 +43,7 @@ export default function AddStudents(){
 const styles = StyleSheet.create({
   inputs : {
     borderWidth: 1,
-    width:"50%",
+    width:"70%",
     textAlign:"center",
     borderColor: "#ccc",
     padding: 10,
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   },
   btn:{
      backgroundColor: "#c1d7eeff",
-       
+     borderWidth:1,
      padding: 12,
      borderRadius: 8,
      borderColor:"black",

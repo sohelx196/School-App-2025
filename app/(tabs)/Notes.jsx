@@ -1,8 +1,18 @@
-import { Text } from "react-native";
+import { Text, View } from "react-native";
 
 
 export default function Notes(){
     return(
-        <Text>Notes Screen</Text>
+        <View 
+        style={{
+             flex:1,
+           justifyContent:"center", 
+           alignItems:"center"
+        }}
+        >
+
+            <Text style={{fontSize:20}}>Notes Coming Soon!</Text>
+
+        </View>
     )
 }

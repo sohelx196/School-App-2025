@@ -10,7 +10,7 @@ export default function Tests(){
            alignItems:"center"
         }}>
 
-            <Text style={{fontSize:20}}>Test Screen</Text>
+            <Text style={{fontSize:20}}>Tests Coming Soon!</Text>
         </View>
     )
 }
