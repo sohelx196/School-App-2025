@@ -15,8 +15,7 @@ export default function Index() {
       }}
     >
      
-
-      <View style={{ borderWidth:2,padding:4,borderRadius:5,borderColor:"gray",boxShadow:"0px 0px 2px gray" }}>
+      <View style={{ borderWidth:2,padding:4,borderRadius:5,borderColor:"gray",boxShadow:"0px 0px 2px gray" , backgroundColor:"white"}}>
         <Link href="/AddStudents"> <Text>Add Student +</Text> </Link>
       </View>
 
