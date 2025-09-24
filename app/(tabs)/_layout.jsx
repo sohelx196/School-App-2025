@@ -38,11 +38,11 @@ export default function tabLayout(){
          tabBarIcon: ({ focused, color, size }) => (
                         <Image
                           source={focused ? require('../../assets/MainImg/attendance.png') : require('../../assets/MainImg/attendance.png')}
-                          style={{ width: size, height: size, tintColor: "" }} // Adjust styling as needed
+                          style={{ width: size, height: size, tintColor: "" }} 
                         />
                       )
       }} />
-      <Tabs.Screen name="Tests"  options={{title:"Test"}}/>
+      <Tabs.Screen name="Tests"  options={{title:"Tests"}}/>
       <Tabs.Screen name="Notes"  options={{title:"Notes"}}/>
     </Tabs>
  )
