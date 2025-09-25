@@ -1,8 +1,8 @@
 import { db } from "../services/firebaseConfig";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
-
-import { Picker } from "@react-native-picker/picker";
+// picker for dropdown like options...
+import { Picker } from "@react-native-picker/picker";  
 import { TextInput,  View,  StyleSheet,  TouchableOpacity,  Text,} from "react-native";
 import { useState } from "react";
 
@@ -48,15 +48,15 @@ export default function AddStudents() {
         alert(`${studentName} added successfully!`);
 
          setStudentName("");        // 
-         setSelectedClass("");      // blancked after submited
+         setSelectedClass("");      // blancked after submition
          setSelectedSection("");    // 
     }
       catch (error){
               console.error("Error adding student: ", error);
-              alert("Error adding student, check console");  
+              alert("Something Went Wrong!! Try Again");  
       }   
 
-      setLoading(false); //show that saving is endedd..
+      setLoading(false); // show that saving is endedd..
 
     };
 
@@ -70,7 +70,7 @@ export default function AddStudents() {
     >
       <TextInput
         style={styles.inputs}
-        placeholder="Student Name"
+        placeholder="Enter Student Name"
         value={studentName}
         onChangeText={setStudentName}
       />
@@ -78,7 +78,7 @@ export default function AddStudents() {
       {/* classs pick */}
       <Picker
         selectedValue={selectedClass}
-        style={styles.inputs}
+       style={[styles.inputs , {height:55,marginTop:5}]}
         onValueChange={(itemValue) => setSelectedClass(itemValue)}
       >
         <Picker.Item label="Select Class" value="" />
@@ -92,7 +92,7 @@ export default function AddStudents() {
       <Picker
         selectedValue={selectedSection}
         // style={[styles.inputs, { textAlign: "center"}]}  this is for aligning text to the center
-        style={styles.inputs}
+        style={[styles.inputs , {height:55 , marginTop:5}]}
         onValueChange={(itemValue) => setSelectedSection(itemValue)}
       >
         <Picker.Item label="Select Section" value="" />
@@ -104,7 +104,7 @@ export default function AddStudents() {
 
       {/* <Button title="Add Student6" style={styles.btn} />  we did not use it because of limited stylingg */}
 
-      <TouchableOpacity style={[styles.btn, loading && { opacity: 0.5 }]} onPress={handleAddStudent} disabled={loading}>
+      <TouchableOpacity style={[styles.btn, loading && { opacity: 0.5}]} onPress={handleAddStudent} disabled={loading}>
         <Text>{loading ? "Adding..." : "Add Student"}</Text>
       </TouchableOpacity>
     </View>
@@ -115,17 +115,17 @@ const styles = StyleSheet.create({
   inputs: {
     borderWidth: 1,
     width: "70%",
-    textAlign: "center",
+    // textAlign: "center",
     borderColor: "#ccc",
-    padding: 10,
+    padding: 17,
     marginBottom: 10,
-    borderRadius: 8,
+    // borderRadius: 8,
     backgroundColor: "#fff",
   },
   btn: {
     backgroundColor: "#c1d7eeff",
     borderWidth: 1,
-    padding: 12,
+    padding: 13,
     borderRadius: 8,
     borderColor: "black",
     marginTop: 10,
