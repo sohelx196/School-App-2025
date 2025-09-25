@@ -31,7 +31,14 @@ export default function tabLayout(){
 
     }}
     >
-      <Tabs.Screen name="index"  options={{title:"Home"}} />
+      <Tabs.Screen name="index"  options={{title:"Home" , 
+        tabBarIcon: ({ focused, color, size }) => (
+                        <Image
+                          source={focused ? require('../../assets/MainImg/home.png') : require('../../assets/MainImg/home.png')}
+                          style={{ width: size, height: size, tintColor: "" }} 
+                        />
+                      )
+      }} />
 
 
       <Tabs.Screen name="Attendence" options={{title:"Attendence" ,
@@ -42,8 +49,22 @@ export default function tabLayout(){
                         />
                       )
       }} />
-      <Tabs.Screen name="Tests"  options={{title:"Tests"}}/>
-      <Tabs.Screen name="Notes"  options={{title:"Notes"}}/>
+      <Tabs.Screen name="Tests"  options={{title:"Tests" , 
+          tabBarIcon: ({ focused, color, size }) => (
+                        <Image
+                          source={focused ? require('../../assets/MainImg/test.png') : require('../../assets/MainImg/test.png')}
+                          style={{ width: size, height: size, tintColor: "" }} 
+                        />
+                      )
+      }}/>
+      <Tabs.Screen name="Notes"  options={{title:"Notes" , 
+           tabBarIcon: ({ focused, color, size }) => (
+                        <Image
+                          source={focused ? require('../../assets/MainImg/notes.png') : require('../../assets/MainImg/notes.png')}
+                          style={{ width: 40, height: 40, tintColor: "" }} 
+                        />
+                      )
+      }}/>
     </Tabs>
  )
 }
