@@ -124,6 +124,7 @@ const styles = StyleSheet.create({
   },
   btn: {
     backgroundColor: "#c1d7eeff",
+    boxShadow:"2px 2px 1px black",
     borderWidth: 1,
     padding: 13,
     borderRadius: 8,

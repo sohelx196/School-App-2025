@@ -14,7 +14,7 @@ export default function Index() {
 
           <Link href="/AddStudents">
         <View style={styles.buttonContainer}>
-            <Text>Add Student +</Text>
+            <Text style={styles.btn}>Add Students +</Text>
         </View>
           </Link>
       </View>
@@ -40,5 +40,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: "gray",
     backgroundColor: "white",
+    boxShadow:"2px 2px 1px black",
   },
+
+  btn:{
+   fontSize:17,
+  }
 });

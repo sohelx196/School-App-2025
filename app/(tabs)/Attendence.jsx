@@ -11,32 +11,25 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { db } from "../../services/firebaseConfig";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  addDoc,
-  serverTimestamp,
-} from "firebase/firestore";
+import {  collection,  query,  where,  getDocs,  addDoc,  doc,  updateDoc,  serverTimestamp,} from "firebase/firestore";
 
 export default function AttendanceScreen() {
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedSection, setSelectedSection] = useState("");
 
-  // today's date by default
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
 
-  // students fetched from Firestore
   const [students, setStudents] = useState([]);
-
-  // attendance state
   const [attendance, setAttendance] = useState({});
 
-  // classes && sections array
   const classes = ["1", "2", "3", "4", "5", "6", "7", "8"];
   const sections = ["A", "B", "C", "D"];
+
+  // state to show saving students..
+  const [loading, setLoading] = useState(false);
+
+
 
   const toggleAttendance = (id) => {
     setAttendance((prev) => ({
@@ -45,7 +38,6 @@ export default function AttendanceScreen() {
     }));
   };
 
-  // handle date select
   const onChangeDate = (event, selectedDate) => {
     setShowDatePicker(false);
     if (selectedDate) {
@@ -53,7 +45,7 @@ export default function AttendanceScreen() {
     }
   };
 
-  // fetch students whenever class + section changes
+  // Fetch students when class or section changes
   useEffect(() => {
     const fetchStudents = async () => {
       if (selectedClass && selectedSection) {
@@ -74,64 +66,107 @@ export default function AttendanceScreen() {
           console.error("Error fetching students: ", error);
         }
       } else {
-        setStudents([]); // reset if nothing selected
+        setStudents([]);
+        setAttendance({});
       }
     };
 
     fetchStudents();
   }, [selectedClass, selectedSection]);
 
-  // save attendance
-  const saveAttendance = async () => {
-    try {
-      if (!selectedClass || !selectedSection) {
-        alert("⚠️ Please select class and section first.");
-        return;
+  // Fetch attendance when date, class, or section changes
+  useEffect(() => {
+    const fetchAttendance = async () => {
+      if (!selectedClass || !selectedSection) return;
+
+      try {
+        const dateKey = date.toDateString();
+        const q = query(
+          collection(db, "attendance"),
+          where("className", "==", selectedClass),
+          where("section", "==", selectedSection),
+          where("date", "==", dateKey)
+        );
+        const snapshot = await getDocs(q);
+
+        if (!snapshot.empty) {
+          const record = snapshot.docs[0].data();
+          const attObj = {};
+          record.students.forEach((s) => {
+            attObj[s.id] = s.status;
+          });
+          setAttendance(attObj);
+        } else {
+          // No attendance for this date yet → reset
+          setAttendance({});
+        }
+      } catch (error) {
+        console.error("Error fetching attendance: ", error);
       }
+    };
 
-      if (students.length === 0) {
-        alert("⚠️ No students found for this class/section.");
-        return;
-      }
+    fetchAttendance();
+  }, [date, selectedClass, selectedSection]);
 
-      const dateKey = date.toDateString();
 
-      // check if attendance already exists
-      const q = query(
-        collection(db, "attendance"),
-        where("className", "==", selectedClass),
-        where("section", "==", selectedSection),
-        where("date", "==", dateKey)
-      );
-      const existing = await getDocs(q);
-
-      if (!existing.empty) {
-        alert("⚠️ Attendance already saved for this date.");
-        return;
-      }
-
-      // prepare data
-      const record = {
-        className: selectedClass,
-        section: selectedSection,
-        date: dateKey,
-        students: students.map((stu) => ({
-          id: stu.id,
-          name: stu.name,
-          status: attendance[stu.id] || "absent",
-        })),
-        createdAt: serverTimestamp(),
-      };
-
-      // save into Firestore
-      await addDoc(collection(db, "attendance"), record);
-
-      alert("✅ Attendance saved successfully!");
-    } catch (error) {
-      console.error("Error saving attendance: ", error);
-      alert("❌ Failed to save attendance.");
+const saveAttendance = async () => {
+  try {
+    if (!selectedClass || !selectedSection) {
+      alert("⚠️ Please select class and section first.");
+      return;
     }
-  };
+
+    if (students.length === 0) {
+      alert("⚠️ No students found for this class/section.");
+      return;
+    }
+
+    setLoading(true);  // started savinggg
+
+    const dateKey = date.toDateString();
+
+    // check if attendance already exists
+    const q = query(
+      collection(db, "attendance"),
+      where("className", "==", selectedClass),
+      where("section", "==", selectedSection),
+      where("date", "==", dateKey)
+    );
+    const existing = await getDocs(q);
+
+    const record = {
+      className: selectedClass,
+      section: selectedSection,
+      date: dateKey,
+      students: students.map((stu) => ({
+        id: stu.id,
+        name: stu.name,
+        status: attendance[stu.id] || "absent",
+      })),
+      createdAt: serverTimestamp(),
+    };
+
+    if (!existing.empty) {
+      // Update the existing attendance document
+      const docId = existing.docs[0].id;
+      await updateDoc(doc(db, "attendance", docId), record);
+      alert("✅ Attendance updated successfully!");
+    } else {
+      // Save new attendance
+      await addDoc(collection(db, "attendance"), record);
+      alert("✅ Attendance saved successfully!");
+    }
+  } catch (error) {
+    console.error("Error saving attendance: ", error);
+    alert("😕 Failed to save attendance.");
+  } finally {
+    setLoading(false); // stop loading...
+  }
+};
+
+
+
+
 
   return (
     <View style={styles.container}>
@@ -212,10 +247,17 @@ export default function AttendanceScreen() {
       />
 
       {/* Save Button */}
-      <TouchableOpacity style={styles.saveButton} onPress={saveAttendance}>
-        <Text style={styles.saveButtonText}>Save Attendance</Text>
-      </TouchableOpacity>
-    </View>
+     <TouchableOpacity
+       style={styles.saveButton}
+       onPress={saveAttendance}
+       disabled={loading} // prevent double click
+      >
+          <Text style={styles.saveButtonText}>
+            {loading ? "Saving..." : "Save Attendance"}
+          </Text>
+     </TouchableOpacity>
+
+    </View>  // main view endedd
   );
 }
 
@@ -260,14 +302,18 @@ const styles = StyleSheet.create({
 
   saveButton: {
     marginTop: 20,
-    backgroundColor: "#3498DB",
+    backgroundColor: "#f6f6f6ff",
+    borderWidth:1,
+    borderColor:"black",
+    
     padding: 14,
     borderRadius: 8,
     alignItems: "center",
+    boxShadow:"3px 3px 1px black",
   },
   saveButtonText: {
-    color: "#fff",
-    fontSize: 16,
+    color: "black",
+    fontSize: 18,
     fontWeight: "bold",
   },
 });
