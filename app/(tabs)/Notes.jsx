@@ -11,7 +11,7 @@ export default function Notes(){
         }}
         >
 
-            <Text style={{fontSize:20}}>Notes Coming Soon!</Text>
+            <Text style={{fontSize:2}}>Notes Coming Soon!</Text>
 
         </View>
     )
