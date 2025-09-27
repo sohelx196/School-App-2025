@@ -1,4 +1,4 @@
-// AttendanceScreen.js
+
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -23,7 +23,7 @@ export default function AttendanceScreen() {
   const [students, setStudents] = useState([]);
   const [attendance, setAttendance] = useState({});
 
-  const classes = ["1", "2", "3", "4", "5", "6", "7", "8"];
+  const classes = ["1", "2", "3", "4","5","6","7","8","9","10","11","12"];
   const sections = ["A", "B", "C", "D"];
 
   // state to show saving students..
@@ -112,12 +112,12 @@ export default function AttendanceScreen() {
 const saveAttendance = async () => {
   try {
     if (!selectedClass || !selectedSection) {
-      alert("⚠️ Please select class and section first.");
+      alert("Please select class and section first.");
       return;
     }
 
     if (students.length === 0) {
-      alert("⚠️ No students found for this class/section.");
+      alert("Oops!!😕 No students found for this class/section.");
       return;
     }
 
@@ -237,13 +237,15 @@ const saveAttendance = async () => {
             </View>
           );
         }}
+
         ListEmptyComponent={
           <Text style={{ textAlign: "center", marginTop: 20, color: "gray" }}>
             {selectedClass && selectedSection
-              ? "No students found in this class & section."
+              ? "No students found in this class & section 😕"
               : "Please select Class and Section."}
           </Text>
         }
+        
       />
 
       {/* Save Button */}

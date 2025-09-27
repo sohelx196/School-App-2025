@@ -15,13 +15,13 @@ export default function AddStudents() {
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedSection, setSelectedSection] = useState("");
 
-  // for button disableling while submitting
+  // for button disableling while submitting...
   const [loading, setLoading] = useState(false);
 
 
 
   // classes & section arrayy
-  const classes = ["1", "2", "3", "4"];
+  const classes = ["1", "2", "3", "4","5","6","7","8","9","10","11","12"];
   const sections = ["A", "B", "C", "D"];
 
 
