@@ -11,7 +11,14 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { db } from "../../services/firebaseConfig";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  addDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 
 export default function AttendanceScreen() {
   const [selectedClass, setSelectedClass] = useState("");
@@ -27,9 +34,9 @@ export default function AttendanceScreen() {
   // attendance state
   const [attendance, setAttendance] = useState({});
 
-  // classes && sedtion ka array
-  const classes = ["1","2","3","4","5","6", "7", "8"];
-  const sections = ["A", "B", "C","D"];
+  // classes && sections array
+  const classes = ["1", "2", "3", "4", "5", "6", "7", "8"];
+  const sections = ["A", "B", "C", "D"];
 
   const toggleAttendance = (id) => {
     setAttendance((prev) => ({
@@ -74,16 +81,65 @@ export default function AttendanceScreen() {
     fetchStudents();
   }, [selectedClass, selectedSection]);
 
+  // save attendance
+  const saveAttendance = async () => {
+    try {
+      if (!selectedClass || !selectedSection) {
+        alert("⚠️ Please select class and section first.");
+        return;
+      }
+
+      if (students.length === 0) {
+        alert("⚠️ No students found for this class/section.");
+        return;
+      }
+
+      const dateKey = date.toDateString();
+
+      // check if attendance already exists
+      const q = query(
+        collection(db, "attendance"),
+        where("className", "==", selectedClass),
+        where("section", "==", selectedSection),
+        where("date", "==", dateKey)
+      );
+      const existing = await getDocs(q);
+
+      if (!existing.empty) {
+        alert("⚠️ Attendance already saved for this date.");
+        return;
+      }
+
+      // prepare data
+      const record = {
+        className: selectedClass,
+        section: selectedSection,
+        date: dateKey,
+        students: students.map((stu) => ({
+          id: stu.id,
+          name: stu.name,
+          status: attendance[stu.id] || "absent",
+        })),
+        createdAt: serverTimestamp(),
+      };
+
+      // save into Firestore
+      await addDoc(collection(db, "attendance"), record);
+
+      alert("✅ Attendance saved successfully!");
+    } catch (error) {
+      console.error("Error saving attendance: ", error);
+      alert("❌ Failed to save attendance.");
+    }
+  };
+
   return (
     <View style={styles.container}>
       {/* Dropdowns */}
       <View style={styles.row}>
         <View style={styles.pickerWrap}>
           <Text style={styles.label}>Class</Text>
-          <Picker
-            selectedValue={selectedClass}
-            onValueChange={setSelectedClass}
-          >
+          <Picker selectedValue={selectedClass} onValueChange={setSelectedClass}>
             <Picker.Item label="Select class" value="" />
             {classes.map((c) => (
               <Picker.Item key={c} label={c} value={c} />
@@ -154,8 +210,11 @@ export default function AttendanceScreen() {
           </Text>
         }
       />
-      
 
+      {/* Save Button */}
+      <TouchableOpacity style={styles.saveButton} onPress={saveAttendance}>
+        <Text style={styles.saveButtonText}>Save Attendance</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -198,4 +257,17 @@ const styles = StyleSheet.create({
   chipText: { color: "#fff", fontWeight: "bold" },
   present: { backgroundColor: "#2ECC71" },
   absent: { backgroundColor: "#E74C3C" },
+
+  saveButton: {
+    marginTop: 20,
+    backgroundColor: "#3498DB",
+    padding: 14,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  saveButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
 });
