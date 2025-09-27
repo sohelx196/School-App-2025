@@ -1,5 +1,5 @@
 // AttendanceScreen.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -10,6 +10,8 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { db } from "../../services/firebaseConfig";
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 export default function AttendanceScreen() {
   const [selectedClass, setSelectedClass] = useState("");
@@ -19,15 +21,15 @@ export default function AttendanceScreen() {
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
 
-  const classes = ["6", "7", "8"];
-  const sections = ["A", "B", "C"];
-  const students = [
-    { id: "1", name: "Rahul Kumar" },
-    { id: "2", name: "Sneha Singh" },
-    { id: "3", name: "Amit Sharma" },
-  ];
+  // students fetched from Firestore
+  const [students, setStudents] = useState([]);
 
+  // attendance state
   const [attendance, setAttendance] = useState({});
+
+  // classes && sedtion ka array
+  const classes = ["1","2","3","4","5","6", "7", "8"];
+  const sections = ["A", "B", "C","D"];
 
   const toggleAttendance = (id) => {
     setAttendance((prev) => ({
@@ -43,6 +45,34 @@ export default function AttendanceScreen() {
       setDate(selectedDate);
     }
   };
+
+  // fetch students whenever class + section changes
+  useEffect(() => {
+    const fetchStudents = async () => {
+      if (selectedClass && selectedSection) {
+        try {
+          const q = query(
+            collection(db, "students"),
+            where("className", "==", selectedClass),
+            where("section", "==", selectedSection)
+          );
+
+          const querySnapshot = await getDocs(q);
+          const data = [];
+          querySnapshot.forEach((doc) => {
+            data.push({ id: doc.id, ...doc.data() });
+          });
+          setStudents(data);
+        } catch (error) {
+          console.error("Error fetching students: ", error);
+        }
+      } else {
+        setStudents([]); // reset if nothing selected
+      }
+    };
+
+    fetchStudents();
+  }, [selectedClass, selectedSection]);
 
   return (
     <View style={styles.container}>
@@ -116,12 +146,19 @@ export default function AttendanceScreen() {
             </View>
           );
         }}
+        ListEmptyComponent={
+          <Text style={{ textAlign: "center", marginTop: 20, color: "gray" }}>
+            {selectedClass && selectedSection
+              ? "No students found in this class & section."
+              : "Please select Class and Section."}
+          </Text>
+        }
       />
+      
+
     </View>
   );
 }
-
-
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
