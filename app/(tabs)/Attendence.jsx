@@ -214,6 +214,20 @@ const saveAttendance = async () => {
         />
       )}
 
+
+{/* Present & Absent Feature for future.. */}
+      {/* <View style={{flexDirection:"row" ,justifyContent:"space-around",borderBottomWidth:1 , borderBottomColor:"lightgray",marginBottom:10}}>
+        <View>
+
+        <Text>Present :</Text>
+        </View>
+        <View>
+
+        <Text style={{marginBottom:5}}>Absent :</Text>
+        </View>
+      </View> */}
+
+
       {/* Students List */}
       <FlatList
         data={students}
