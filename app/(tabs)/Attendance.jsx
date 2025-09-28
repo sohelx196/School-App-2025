@@ -223,14 +223,13 @@ const absentCount = students.length - presentCount;
       )}
 
 
-{/* Present & Absent Feature for future.. */}
+{/* Present & Absent Feature...*/}
       <View style={{flexDirection:"row" ,justifyContent:"space-around",borderBottomWidth:1 , borderBottomColor:"lightgray",marginBottom:10}}>
         <View>
-
         <Text>Present : {presentCount}</Text>
         </View>
-        <View>
 
+        <View>
         <Text style={{marginBottom:5}}>Absent : {absentCount} </Text>
         </View>
       </View>

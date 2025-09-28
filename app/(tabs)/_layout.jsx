@@ -41,7 +41,7 @@ export default function tabLayout(){
       }} />
 
 
-      <Tabs.Screen name="Attendence" options={{title:"Attendence" ,
+      <Tabs.Screen name="Attendance" options={{title:"Attendance" ,
          tabBarIcon: ({ focused, color, size }) => (
                         <Image
                           source={focused ? require('../../assets/MainImg/attendance.png') : require('../../assets/MainImg/attendance.png')}
