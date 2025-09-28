@@ -166,6 +166,14 @@ const saveAttendance = async () => {
 
 
 
+// present absent count..
+const presentCount = students.filter(
+  (stu) => attendance[stu.id] === "present"
+).length;
+
+const absentCount = students.length - presentCount;
+
+
 
 
   return (
@@ -216,16 +224,16 @@ const saveAttendance = async () => {
 
 
 {/* Present & Absent Feature for future.. */}
-      {/* <View style={{flexDirection:"row" ,justifyContent:"space-around",borderBottomWidth:1 , borderBottomColor:"lightgray",marginBottom:10}}>
+      <View style={{flexDirection:"row" ,justifyContent:"space-around",borderBottomWidth:1 , borderBottomColor:"lightgray",marginBottom:10}}>
         <View>
 
-        <Text>Present :</Text>
+        <Text>Present : {presentCount}</Text>
         </View>
         <View>
 
-        <Text style={{marginBottom:5}}>Absent :</Text>
+        <Text style={{marginBottom:5}}>Absent : {absentCount} </Text>
         </View>
-      </View> */}
+      </View>
 
 
       {/* Students List */}
