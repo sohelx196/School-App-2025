@@ -260,7 +260,7 @@ const absentCount = students.length - presentCount;
         }}
 
         ListEmptyComponent={
-          <Text style={{ textAlign: "center", marginTop: 20, color: "gray" }}>
+          <Text style={{ textAlign: "center", marginTop: 20, color: "red" }}>
             {selectedClass && selectedSection
               ? "No students found in this class & section 😕"
               : "Please select Class and Section."}
