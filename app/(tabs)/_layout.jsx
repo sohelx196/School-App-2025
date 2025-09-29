@@ -49,7 +49,7 @@ export default function tabLayout(){
                         />
                       )
       }} />
-      <Tabs.Screen name="Tests"  options={{title:"Tests" , 
+      <Tabs.Screen name="TestResultsScreen"  options={{title:"Tests" , 
           tabBarIcon: ({ focused, color, size }) => (
                         <Image
                           source={focused ? require('../../assets/MainImg/test.png') : require('../../assets/MainImg/test.png')}

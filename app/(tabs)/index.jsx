@@ -5,7 +5,12 @@ export default function Index() {
   return (
     <>
       <View style={styles.container}>
-    
+
+
+    <Text style={styles.heading}>Saraswati Shishu/Vidya Mandir</Text>
+    <Text style={styles.heading}> Anand Nagar, Khandwa</Text>
+
+
         <Image 
           source={require("../../assets/MainImg/students.png")}
           style={styles.logo}
@@ -37,7 +42,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     borderWidth: 2,
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 10,
     borderColor: "gray",
     backgroundColor: "white",
     boxShadow:"2px 2px 1px black",
@@ -45,5 +50,11 @@ const styles = StyleSheet.create({
 
   btn:{
    fontSize:17,
+  },
+
+  heading:{
+    fontSize:20,
+    fontWeight:500,
+    color:"darkred"
   }
 });
