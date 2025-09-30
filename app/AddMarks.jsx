@@ -279,26 +279,3 @@ const styles = StyleSheet.create({
 });
 
 
-
-
-      //  <Link href="/AddMarks">
-      //         <View style={styles.markBtn}>
-      //           <Text style={styles.btnText}>Add Marks</Text>
-      //         </View>
-      //     </Link>
-
-
-      
-// const styles = StyleSheet.create({
-//     markBtn : {
-//         borderWidth:1,
-//     borderWidth:1,
-//     borderColor:"black",
-//     padding: 5,
-//     borderRadius: 8,
-//     boxShadow:"2px 2px 1px black",
-//     },
-//     btnText : {
-//         color:"black"
-//     }
-// })

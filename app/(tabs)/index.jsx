@@ -7,8 +7,10 @@ export default function Index() {
       <View style={styles.container}>
 
 
-    <Text style={styles.heading}>Saraswati Shishu/Vidya Mandir</Text>
-    <Text style={styles.heading}> Anand Nagar, Khandwa</Text>
+    {/* <Text style={styles.heading}>Saraswati Shishu/Vidya Mandir</Text>
+    <Text style={styles.heading}> Anand Nagar, Khandwa</Text> */}
+    <Text style={styles.heading}>सरस्वती शिशु / विद्या मंदिर,</Text>
+    <Text style={styles.heading}>आनंद नगर,खंडवा</Text>
 
 
         <Image 

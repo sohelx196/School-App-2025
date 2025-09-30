@@ -127,7 +127,7 @@ export default function MarksShowScreen({ navigation }) {
 
         <Link href="/AddMarks">
                <View style={styles.markBtn}>
-                 <Text style={styles.btnText}>Add Marks</Text>
+                 <Text style={styles.btnText}>Add More Test</Text>
                </View>
         </Link>
 
@@ -179,4 +179,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   addText: { color: "white", fontSize: 18, fontWeight: "bold" },
+
+  markBtn: {
+    backgroundColor: "#f6f6f6ff",
+    borderWidth:1,
+    borderColor:"black",
+    padding: 6,
+    borderRadius: 8,
+    boxShadow:"3px 3px 1px black",
+  
+  }
+
+
 });

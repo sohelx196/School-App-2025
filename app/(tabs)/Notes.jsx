@@ -3,7 +3,7 @@ import { Text, View } from "react-native";
 
 export default function Notes(){
     return(
-        <View 
+      <View 
         style={{
              flex:1,
            justifyContent:"center", 
@@ -13,6 +13,6 @@ export default function Notes(){
 
             <Text style={{fontSize:20}}>Notes Coming Soon!</Text>
 
-        </View>
+      </View>
     )
 }
